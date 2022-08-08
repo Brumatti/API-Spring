@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +28,7 @@ class UserServiceImplTest {
     public static final String EMAIL = "pedro@email.com";
     public static final String PASSWORD = "123";
     public static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado";
+    public static final int INDEX = 0;
     @InjectMocks
     private UserServiceImpl service;
     @Mock
@@ -74,7 +76,19 @@ class UserServiceImplTest {
     }
 
     @Test
-    void findAll() {
+    void whenFindAllThenReturnAnListOfUsers() {
+        when(repository.findAll()).thenReturn(List.of(users)); //mock
+
+        List<Users> response = service.findAll();
+
+        assertNotNull(response);
+        assertEquals(1, response.size());//assegurar que so ira vir 1 usuario
+        assertEquals(Users.class, response.get(INDEX).getClass()); //assegura o que o obj no index 0 é do tipo users
+
+        assertEquals(ID, response.get(INDEX).getId()); //assegurando que o objeto que veio no index 0 é o id igual o que foi passado no parametro
+        assertEquals(NAME, response.get(INDEX).getName()); //assegurando que o objeto que veio no index 0 é o id igual o que foi passado no parametro
+        assertEquals(EMAIL, response.get(INDEX).getEmail()); //assegurando que o objeto que veio no index 0 é o id igual o que foi passado no parametro
+        assertEquals(PASSWORD, response.get(INDEX).getPassword()); //assegurando que o objeto que veio no index 0 é o id igual o que foi passado no parametro
     }
 
     @Test
