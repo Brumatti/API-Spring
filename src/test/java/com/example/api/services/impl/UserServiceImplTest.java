@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserServiceImplTest {
@@ -147,7 +147,13 @@ class UserServiceImplTest {
     }
 
     @Test
-    void delete() {
+    void deleteWithSuccess() {
+        when(repository.findById(anyInt())).thenReturn(optionalUser); //mockando para nao lancar execao de obj nao encontrado
+        doNothing().when(repository).deleteById(anyInt()); //nao fazer nada quando meu repository for chamando no metodo deletebyId passando qualquer valor Inteiro
+        service.delete(ID);
+        verify(repository, times(1)).deleteById(anyInt());
+        //Como o metodo nao retorna nada(void), chama o metodo verify para ver
+        // quantas vezes o repository foi chamado no metodo deleteById
     }
 
     private void startUsers(){
