@@ -1,4 +1,4 @@
-package com.example.api.services.exceptions;
+package com.example.api.resources.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
