@@ -91,7 +91,15 @@ class UserResourceTest {
     }
 
     @Test
-    void create() {
+    void whenCreateThenRetunrCreated() {
+        when(service.create(any())).thenReturn(users);
+
+        ResponseEntity<UserDTO> response = resource.create(userDTO);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode()); //verificou que foi 201 created
+        assertNotNull(response.getHeaders().get("Location")); //Que no headers ira ter a chaver Location que é a URI de acesso ao novo obj
+        assertEquals(ResponseEntity.class, response.getClass()); //Assegurando que a classe vai ser tipo REntity
+
     }
 
     @Test
