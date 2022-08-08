@@ -155,6 +155,18 @@ class UserServiceImplTest {
         //Como o metodo nao retorna nada(void), chama o metodo verify para ver
         // quantas vezes o repository foi chamado no metodo deleteById
     }
+    @Test
+    void deleteWithObjectNotFoundException(){
+        when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException(OBJETO_NAO_ENCONTRADO));
+        try {
+            service.delete(ID);
+        } catch (Exception ex){
+            assertEquals(ObjectNotFoundException.class, ex.getClass()); //Assegurando que o ObjectNotFoundException seja da mesma classe da excecao
+            //"(Exception ex)" qu foi lancada quando chamamos o service.delete
+            assertEquals(OBJETO_NAO_ENCONTRADO, ex.getMessage());
+        }
+
+    }
 
     private void startUsers(){
         users = new Users(ID, NAME, EMAIL, PASSWORD);
