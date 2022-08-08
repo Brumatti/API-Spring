@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserResourceTest {
@@ -118,11 +118,20 @@ class UserResourceTest {
         assertEquals(ID, response.getBody().getId());
         assertEquals(NAME, response.getBody().getName());
         assertEquals(EMAIL, response.getBody().getEmail());
-        //assertEquals(PASSWORD, response.getBody().getPassword());
+        //assertEquals(PASSWORD, response.getBody().getPassword()); pode ser quebra de segguranca retornar a password
     }
 
     @Test
-    void delete() {
+    void whenDeleteThenReturnSucces() {
+        doNothing().when(service).delete(anyInt()); // nao faca nada quando meu service chamar o metodo delete passando qualquer valor como parm
+
+        ResponseEntity<UserDTO> response = resource.delete(ID);
+
+        assertNotNull(response);
+        verify(service, times(1)).delete(anyInt());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
     }
 
     private void startUsers(){
