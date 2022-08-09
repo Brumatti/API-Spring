@@ -41,8 +41,8 @@ class UserResourceTest {
 
     public static final int INDEX = 0;
 
-    private Users users;
-    private UserDTO userDTO;
+    private Users users = new Users();
+    private UserDTO userDTO = new UserDTO();
 
 
 
